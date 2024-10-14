@@ -1,0 +1,40 @@
+logbook:
+  predicate:
+    exclude:
+      - methods:
+          - GET
+        path: /favicon.ico
+  format:
+    style: curl
+
+logging:
+  level:
+    org:
+      zalando:
+        logbook:
+          Logbook: TRACE
+
+---
+spring:
+  config:
+    activate:
+      on-profile: external
+server:
+  port: 8081
+
+---
+spring:
+  cloud:
+    discovery:
+      client:
+        simple:
+          instances:
+            external:
+              - instance-id: external
+                uri: http://localhost:8081
+  config:
+    activate:
+      on-profile: logbook
+
+server:
+  port: 8082
